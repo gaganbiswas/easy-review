@@ -5,9 +5,6 @@ const toast = document.getElementById("toast");
 const submitButton = form.querySelector(".submit-btn");
 const star4 = document.getElementById("star4");
 const star5 = document.getElementById("star5");
-const queryString = window.location.search;
-const params = new URLSearchParams(queryString);
-const businessLink = params.get("business_link");
 
 let timeout;
 
@@ -65,7 +62,7 @@ const showToast = (message, isError) => {
 
 star4.addEventListener("click", () => {
   if (!businessLink) {
-    window.location.pathname = "null";
+    window.location.pathname = "#";
   }
 
   window.location.href = businessLink;
@@ -73,7 +70,7 @@ star4.addEventListener("click", () => {
 
 star5.addEventListener("click", () => {
   if (!businessLink) {
-    window.location.pathname = "null";
+    window.location.pathname = "#";
   }
   window.location.href = businessLink;
 });

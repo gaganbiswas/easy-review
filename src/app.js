@@ -2,6 +2,7 @@ const express = require("express");
 require("dotenv").config();
 const router = require("./routes/index");
 const path = require("path");
+const fs = require("fs");
 
 const PORT = process.env.PORT || 5001;
 
@@ -9,24 +10,23 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.get("/", (req, res, next) => {
-  if (!req.query.business_link) {
-    return res.redirect(
-      301,
-      `?business_link=${encodeURIComponent(
-        process.env.GOOGLE_REVIEW_REDIRECT_LINK
-      )}`
-    );
-  }
-
-  // Serve the index.html when the query parameter is present
+app.get("/", (_, res) => {
   const filePath = path.join(__dirname, "../dist/index.html");
 
-  return res.sendFile(filePath, (err) => {
+  fs.readFile(filePath, "utf8", (err, html) => {
     if (err) {
-      console.error("Error serving index.html:", err);
-      res.status(500).send("Internal Server Error");
+      console.error("Error reading HTML file:", err);
+      return res.status(500).send("Internal Server Error");
     }
+
+    const injectedHtml = html
+      .replaceAll("BUSINESS_NAME", process.env.BUSINESS_NAME)
+      .replace(
+        `<div id="business-link-placeholder"></div>`,
+        `<script>const businessLink = "${process.env.GOOGLE_REVIEW_REDIRECT_LINK}";</script>`
+      );
+
+    return res.send(injectedHtml);
   });
 });
 

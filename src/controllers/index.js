@@ -1,5 +1,3 @@
-const path = require("path");
-const fs = require("fs");
 const { sendMail } = require("../lib/utils");
 
 module.exports = {
