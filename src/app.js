@@ -32,6 +32,11 @@ app.get("/", (_, res) => {
 
 app.use(express.static(path.join(__dirname, "../dist")));
 
+// Explicitly handle the favicon route (optional)
+app.get("/favicon.ico", (_, res) => {
+  res.sendFile(path.join(__dirname, "dist", "favicon.ico"));
+});
+
 app.use(router);
 
 app.get("*", (req, res) => {

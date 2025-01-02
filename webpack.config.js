@@ -1,6 +1,7 @@
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: "./src/public/main.js", // Entry point for your JavaScript
@@ -20,6 +21,11 @@ module.exports = {
     ],
   },
   plugins: [
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: "src/public/favicon.ico", to: "favicon.ico" }, // Copy favicon.ico to dist
+      ],
+    }),
     new MiniCssExtractPlugin({
       filename: "styles.css", // Name of the output CSS file
     }),
